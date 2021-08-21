@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 project(atcoder_env_cpp LANGUAGES CXX C)
 
+# Executable
+set(EXECUTABLES "")
+
+# list(APPEND EXECUTABLES A)
+# list(APPEND EXECUTABLES B)
+# list(APPEND EXECUTABLES C)
+# list(APPEND EXECUTABLES D)
+# list(APPEND EXECUTABLES E)
+# list(APPEND EXECUTABLES F)
+
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 option(BUILD_TEMPLATE "Build template.cc" OFF)
@@ -57,24 +67,19 @@ else()
     message(STATUS "google-glog: DISABLED")
 endif()
 
-
-# Executable
-set(EXECUTABLES "")
-
-# list(APPEND EXECUTABLES A)
-# list(APPEND EXECUTABLES B)
-# list(APPEND EXECUTABLES C)
-# list(APPEND EXECUTABLES D)
-# list(APPEND EXECUTABLES E)
-# list(APPEND EXECUTABLES F)
-
 if (BUILD_TEMPLATE)
   list(APPEND EXECUTABLES template)
 endif (BUILD_TEMPLATE)
 
 foreach(EXECUTABLE IN LISTS EXECUTABLES)
   add_executable(${EXECUTABLE} ${EXECUTABLE}.cc)
+
+  ## Linked librarys
   target_link_libraries(${EXECUTABLE} PRIVATE ${ATCODER_LINK_LIBRARIES})
+
+  ## Include directries
+  ### AC library
+  target_include_directories(${EXECUTABLE} SYSTEM PRIVATE ${CMAKE_SOURCE_DIR})
 
   ## Compile Option
   target_compile_options(${EXECUTABLE} PRIVATE
